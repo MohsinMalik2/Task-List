@@ -1,24 +1,45 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import { Footer } from './components/Footer';
+import Header from './components/Header';
+import { TodoList } from './components/TodoList';
 
 function App() {
+  const deleteNow = (todo) =>{
+    console.log(todo);
+    setTodos(todos.filter((e)=>{
+        return e!==todo;
+    }));
+  };
+  const [todos, setTodos] = useState( [
+    {
+    sno: 1,
+    title: "Market",
+    desc: "Go to the market please"
+  },{
+    sno: 2,
+    title: "Hotel",
+    desc: "Go to the Hotel please"
+  },
+  {
+    sno: 3,
+    title: "Cafe",
+    desc: "Go to the Cafe please"
+  }
+
+]);
+
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div>
+        <Header title="Today's Work" disable={true}/>
+        <div className="container">
+          <TodoList todos={todos} delete={deleteNow}/>
+        </div>
+        <Footer/>
+      </div>
+    
   );
 }
 
