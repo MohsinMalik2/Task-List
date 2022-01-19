@@ -1,11 +1,27 @@
-import { useState } from 'react';
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
+import { useState, useEffect } from 'react';
 import './App.css';
 import { Footer } from './components/Footer';
 import Header from './components/Header';
 import { TodoList } from './components/TodoList';
 import { AddTodo } from './components/AddTodo';
+import About from './components/About';
+
+
 
 function App() {
+  let initTodo = ""
+  if(localStorage.getItem("todos") === null){
+    initTodo=[]
+  }
+  else{
+    initTodo= JSON.parse(localStorage.getItem("todos"))
+  }
   const deleteNow = (todo) =>{
     console.log(todo);
     setTodos(todos.filter((e)=>{
@@ -13,53 +29,63 @@ function App() {
     }));
   };
 
-  const submit = (e) =>{
-    e.preventDefault();
+ const addTodo = (title, desc) =>{
 
-
-
-    console.log("submitted form",e);
-    // setTodos(todos.filter((e)=>{
-    //     return e!==todo;
-    // }));
-  };
-  const [todos, setTodos] = useState( [
-    {
-    sno: 1,
-    title: "Market",
-    desc: "Go to the market please"
-  },{
-    sno: 2,
-    title: "Hotel",
-    desc: "Go to the Hotel please"
-  },
-  {
-    sno: 3,
-    title: "Cafe",
-    desc: "Go to the Official Cafe please"
+  console.log("Get well soon",title,desc);
+  let sno = "";
+  if(todos.length !== 0){
+     sno =  todos[todos.length-1].sno + 1;
   }
+  else{
+     sno =   1;
+  }
+    const myTodo = {
+      sno: sno,
+      title:title,
+      desc: desc
+    }
+    setTodos([...todos,myTodo])
 
-]);
+ }
 
+  const [todos, setTodos] = useState(initTodo);
 
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos))
+   }, [todos]);
+   
 
   return (
-      <div>
+    <div>
+    <Router>
+     
         <Header title="Today's Work" disable={true}/>
         <div className="container">
-          <div className="row">
-            <div className="col-md-8">
-                <TodoList todos={todos} delete={deleteNow}/>
-            </div>
-            <div className="col-md-4 bg-secondary my-5">
-                <AddTodo submit={submit}/>
-            </div>
-          </div>
-          
+          <Switch>
+            <Route path="/about">
+              <About/>
+            </Route>
+            <Route path="/">
+              <div className="row">
+                  <div className="col-md-8 my-3">
+                      <TodoList todos={todos} delete={deleteNow}/>
+                  </div>
+                  <div className="col-md-4  ">
+                    <div className='card bg-info my-5'>
+                      <div className='card-body'>
+                          <AddTodo addTodo={addTodo}/>
+                      </div>
+                    </div>
+                      
+                  </div>
+                </div>
+            </Route>
+          </Switch>
         </div>
         <Footer/>
-      </div>
-    
+      
+    </Router>
+    </div>
   );
 }
 

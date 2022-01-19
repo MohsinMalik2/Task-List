@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const Todo = (props) => {
-  return <div className='col-md-3'>
+  return <div className='col-md-3 my-2'>
             <div className="card">
                     <div className="card-header">
                         Task # {props.todos.sno}
