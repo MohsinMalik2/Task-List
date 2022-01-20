@@ -71,7 +71,7 @@ function App() {
                       <TodoList todos={todos} delete={deleteNow}/>
                   </div>
                   <div className="col-md-4  ">
-                    <div className='card bg-info my-5'>
+                    <div className='card bg-outline-info my-5'>
                       <div className='card-body'>
                           <AddTodo addTodo={addTodo}/>
                       </div>
